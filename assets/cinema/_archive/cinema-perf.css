@@ -1,0 +1,49 @@
+/* ═══════════════════════════════════════════════════════
+   CINEMA-PERF — kill the lag pass
+   Removes expensive backdrop-filters, dampens rAF loops,
+   keeps the look, drops the GPU cost
+   ═══════════════════════════════════════════════════════ */
+
+/* Backdrop-filter is the #1 GPU killer — kill it on most HUD elements */
+.cine-hud-readout,
+.cine-hud-status,
+.cine-panel,
+.cine-sound,
+.cine-bootlog{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.cine-hud-readout,
+.cine-hud-status{background:rgba(7,10,15,.78)!important}
+.cine-panel{background:rgba(7,10,15,.72)!important}
+
+/* Drop heartbeat animation off body (was repainting EVERY descendant) */
+body.cine-hud-on{animation:none!important}
+/* Keep it only on a few specific elements */
+body.cine-hud-on .cine-hud-bracket{animation:cineHudHB 2.6s ease-in-out infinite}
+body.cine-hud-on .cine-reactor-core{animation:cineReactorPulse 2.6s ease-in-out infinite}
+
+/* Slow the VHS sweep — was paint-heavy at 14s loop */
+.cine-vhs-sweep{animation-duration:30s!important;opacity:.5!important}
+body.cine-hud-on .cine-vhs-sweep{opacity:.5!important}
+
+/* Disable the trailing spotlight ring (extra rAF + paint) */
+.cine-spot-ring{display:none!important}
+
+/* Cap mix-blend-mode usage on small/peripheral elements (forces layer composition) */
+.cine-spotlight{mix-blend-mode:normal!important;opacity:.55}
+.cine-grade{mix-blend-mode:multiply!important}
+
+/* will-change hints for the heavy elements that DO animate */
+.cine-reactor-ring,
+.cine-reactor-core,
+.cine-reticle,
+.cine-spotlight{will-change:transform}
+
+/* Lower the WebGL atmosphere visual weight slightly to reduce overdraw */
+#cine-atmosphere.live{opacity:.42!important}
+
+/* On smaller screens, disable expensive layers entirely */
+@media(max-width:1100px){
+  .cine-reactor,.cine-vhs-sweep,.cine-vhs-scan,.cine-bootlog,.cine-panel{display:none!important}
+}

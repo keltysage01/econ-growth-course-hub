@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anthropic Course Hub — eCon Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #070A0F;
+    --text: #EAF0FF;
+    --accent: #21E68A;
+    --accent-dim: rgba(33,230,138,.12);
+    --border: rgba(234,240,255,.06);
+    --border-hover: rgba(234,240,255,.14);
+    --muted: rgba(234,240,255,.4);
+    --card-bg: rgba(234,240,255,.03);
+    --radius: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background .3s, backdrop-filter .3s, border-bottom .3s;
+  }
+  nav.scrolled {
+    background: rgba(7,10,15,.82);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: .08em;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    padding: 160px 48px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 8vw, 104px);
+    line-height: .95;
+    letter-spacing: .02em;
+    margin-bottom: 32px;
+  }
+  h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  /* GRID BG LINE */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -100px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle at 60% 40%, rgba(33,230,138,.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* FILTER BAR */
+  .filter-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px 40px;
+  }
+  .filter-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .08em;
+    padding: 8px 18px;
+    border-radius: 40px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #070A0F;
+  }
+
+  /* COURSE GRID */
+  .courses {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px 120px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .2s, background .2s, transform .2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(33,230,138,.3), transparent);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .card:hover {
+    border-color: var(--border-hover);
+    background: rgba(234,240,255,.05);
+    transform: translateY(-2px);
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: .1em;
+    opacity: .7;
+  }
+  .card-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .badge-free { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(33,230,138,.2); }
+  .badge-dev { background: rgba(120,120,255,.1); color: #9090ff; border: 1px solid rgba(120,120,255,.2); }
+  .badge-mcp { background: rgba(255,200,80,.08); color: #ffc850; border: 1px solid rgba(255,200,80,.2); }
+
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: .03em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    flex: 1;
+  }
+  .card-modules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .module-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: rgba(234,240,255,.35);
+    background: rgba(234,240,255,.04);
+    border: 1px solid var(--border);
+    padding: 3px 9px;
+    border-radius: 4px;
+    letter-spacing: .04em;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .card-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .08em;
+  }
+  .card-arrow {
+    width: 28px; height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 13px;
+    transition: all .2s;
+  }
+  .card:hover .card-arrow {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  /* SECTION DIVIDER */
+  .section-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 48px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .1em;
+  }
+
+  /* CTA BANNER */
+  .cta-banner {
+    max-width: 1200px;
+    margin: 0 auto 80px;
+    padding: 0 48px;
+  }
+  .cta-inner {
+    background: var(--accent-dim);
+    border: 1px solid rgba(33,230,138,.2);
+    border-radius: var(--radius);
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  .cta-text h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: .03em;
+    margin-bottom: 6px;
+  }
+  .cta-text p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .btn-primary {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    background: var(--accent);
+    color: #070A0F;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    font-weight: 600;
+    transition: opacity .2s;
+  }
+  .btn-primary:hover { opacity: .88; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .1em;
+  }
+
+  /* CPN SECTION */
+  .cpn-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px 64px;
+  }
+  .cpn-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .cpn-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    background: rgba(33,230,138,.15);
+    color: var(--accent);
+    border: 1px solid rgba(33,230,138,.3);
+  }
+  .cpn-inner {
+    border: 1px solid rgba(33,230,138,.25);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(33,230,138,.05) 0%, rgba(7,10,15,0) 60%);
+    overflow: hidden;
+    position: relative;
+  }
+  .cpn-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), rgba(33,230,138,.2), transparent);
+  }
+  .cpn-top {
+    padding: 40px 48px 32px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .cpn-top h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: .03em;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .cpn-top h2 span { color: var(--accent); }
+  .cpn-top p {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.65;
+  }
+  .cpn-cert {
+    background: rgba(33,230,138,.08);
+    border: 1px solid rgba(33,230,138,.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    min-width: 220px;
+  }
+  .cpn-cert-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .cpn-cert-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: .03em;
+    margin-bottom: 4px;
+  }
+  .cpn-cert-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .06em;
+  }
+  .cpn-steps {
+    padding: 32px 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+  .cpn-step {
+    background: var(--bg);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: background .2s;
+  }
+  .cpn-step:hover { background: rgba(33,230,138,.04); }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: .14em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(33,230,138,.2);
+  }
+  .step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: .03em;
+  }
+  .step-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .step-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: .06em;
+    word-break: break-all;
+    opacity: .8;
+  }
+  .cpn-note {
+    padding: 20px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .cpn-note-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cpn-note-item::before {
+    content: '⚠';
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  /* PARTNER TRACK ROW */
+  .partner-track {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px 64px;
+  }
+  .partner-track-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .partner-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .partner-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(33,230,138,.15);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .partner-card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: .14em;
+  }
+  .partner-video-wrap {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #0d1117;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .partner-no-video {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-align: center;
+    padding: 32px 16px;
+  }
+  .partner-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: .03em;
+    line-height: 1.1;
+  }
+  .partner-card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .partner-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+    transition: background .2s, color .2s;
+  }
+  .partner-link:hover {
+    background: var(--accent);
+    color: #070A0F;
+  }
+  @media (max-width: 900px) {
+    .partner-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .partner-grid { grid-template-columns: 1fr; }
+    .partner-track { padding-left: 24px; padding-right: 24px; }
+  }
+
+  /* VIDEO CARDS */
+  .card-video {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+    background: #000;
+    max-height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  .video-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .video-label::before {
+    content: '▶';
+    font-size: 8px;
+  }
+  .btn-low-cog {
+    display: block;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    background: var(--accent-dim);
+    transition: background .2s, color .2s;
+  }
+  .btn-low-cog:hover {
+    background: var(--accent);
+    color: #070A0F;
+  }
+  .card-course-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .card-course-link:hover { color: var(--accent); }
+
+  /* HIDDEN / FILTER LOGIC */
+  .card[data-hidden="true"] { display: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .hero, .filter-section, .courses, .section-header, .cta-banner, footer {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    .courses { grid-template-columns: 1fr; }
+    .cpn-steps { grid-template-columns: 1fr !important; }
+    .cpn-top { flex-direction: column; }
+    .cpn-section { padding-left: 24px; padding-right: 24px; }
+    .cpn-top, .cpn-note { padding-left: 24px; padding-right: 24px; }
+    .cpn-steps { padding: 0; }
+    .hero-stats { gap: 28px; flex-wrap: wrap; }
+    .cta-inner { flex-direction: column; align-items: flex-start; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">// ECON-GROWTH / AI_OPS</a>
+  <ul class="nav-links">
+    <li><a href="#partner-network">Partner Network</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="https://econ-growth.com" target="_blank">Home</a></li>
+    <li><a href="https://anthropic.skilljar.com" target="_blank">Skilljar</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">Anthropic Certified Training</div>
+  <h1>THE AI<br><span>OPERATOR'S</span><br>LIBRARY</h1>
+  <p class="hero-sub">19 courses from Anthropic — covering Claude, MCP, agent systems, and AI fluency. Built for serious operators who implement, not just experiment.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">19</div>
+      <div class="stat-label">Courses</div>
+    </div>
+    <div>
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Free Access</div>
+    </div>
+    <div>
+      <div class="stat-num">6</div>
+      <div class="stat-label">Categories</div>
+    </div>
+    <div>
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Leverage</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLAUDE PARTNER NETWORK -->
+<div class="cpn-section" id="partner-network">
+  <div class="cpn-header">
+    <div class="section-line" style="max-width:40px;"></div>
+    <span class="section-label" style="margin:0;">// Claude Partner Network</span>
+    <span class="cpn-badge">Learning Path</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="cpn-inner">
+    <div class="cpn-top">
+      <div>
+        <h2>PARTNER<br><span>LEARNING PATH</span></h2>
+        <p>Congratulations on taking this first step toward partnership with Anthropic. This learning path is designed as an introductory foundation to the Claude Partner Network and the first step toward unlocking certification.</p>
+      </div>
+      <div class="cpn-cert">
+        <div class="cpn-cert-label">// First Step Toward</div>
+        <div class="cpn-cert-name">CCAF</div>
+        <div class="cpn-cert-sub">Claude Certified Architect<br>Foundations</div>
+      </div>
+    </div>
+    <div class="cpn-steps" style="grid-template-columns: repeat(4,1fr);">
+      <a class="cpn-step" href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank">
+        <div class="step-num">01</div>
+        <div class="step-title">Agent Skills</div>
+        <p class="step-desc">Build, configure, and share reusable markdown instructions Claude applies automatically across teams.</p>
+        <div class="step-link">skilljar →</div>
+      </a>
+      <a class="cpn-step" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank">
+        <div class="step-num">02</div>
+        <div class="step-title">Building with the Claude API</div>
+        <p class="step-desc">Full spectrum: API auth, tool use, RAG, prompt caching, agents, and Computer Use. Hands-on with Python.</p>
+        <div class="step-link">skilljar →</div>
+      </a>
+      <a class="cpn-step" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank">
+        <div class="step-num">03</div>
+        <div class="step-title">Intro to MCP</div>
+        <p class="step-desc">Python-based MCP server and client development. Tools, resources, and prompts for connecting Claude to external services.</p>
+        <div class="step-link">skilljar →</div>
+      </a>
+      <a class="cpn-step" href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank">
+        <div class="step-num">04</div>
+        <div class="step-title">Claude Code in Action</div>
+        <p class="step-desc">Integrate Claude Code into development workflows. Context management, MCP servers, GitHub, hooks, and the SDK.</p>
+        <div class="step-link">skilljar →</div>
+      </a>
+    </div>
+    <div class="cpn-note">
+      <span class="cpn-note-item" style="margin-right:auto;">Questions? academy-support@anthropic.com</span>
+      <a href="https://anthropic.skilljar.com/page/claude-partner-network-learning-path" target="_blank" class="btn-primary" style="font-size:11px;padding:10px 22px;">Start Learning Path →</a>
+    </div>
+  </div>
+</div>
+
+<!-- PARTNER TRACK VIDEO ROW -->
+<div class="partner-track">
+  <div class="partner-track-header">
+    <span class="section-label">// Partner Network — 4 Required Courses</span>
+    <div class="section-line"></div>
+    <a href="https://anthropic.skilljar.com/page/claude-partner-network-learning-path" target="_blank" class="btn-primary" style="font-size:11px;padding:10px 24px;white-space:nowrap;">Start the Learning Path →</a>
+  </div>
+  <div class="partner-grid">
+
+    <div class="partner-card">
+      <div class="partner-card-num">01</div>
+      <div class="partner-video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/PlEIZuF9ZvM" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="width:100%;aspect-ratio:16/9;border-radius:8px;display:block;"></iframe>
+      </div>
+      <div class="partner-card-title">Agent Skills</div>
+      <p class="partner-card-desc">Build reusable markdown instructions Claude applies automatically across teams.</p>
+      <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" class="partner-link">Open Course →</a>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-card-num">02</div>
+      <div class="partner-video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/MWmp-V-Acys" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="width:100%;aspect-ratio:16/9;border-radius:8px;display:block;"></iframe>
+      </div>
+      <div class="partner-card-title">Building with the Claude API</div>
+      <p class="partner-card-desc">Full spectrum: auth, RAG, tool use, agents, prompt caching, and Computer Use.</p>
+      <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank" class="partner-link">Open Course →</a>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-card-num">03</div>
+      <div class="partner-video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/X-hHagL-nt0" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="width:100%;aspect-ratio:16/9;border-radius:8px;display:block;"></iframe>
+      </div>
+      <div class="partner-card-title">Intro to MCP</div>
+      <p class="partner-card-desc">Tools, resources, and prompts — the three primitives that connect Claude to your stack.</p>
+      <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" class="partner-link">Open Course →</a>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-card-num">04</div>
+      <div class="partner-video-wrap">
+        <iframe src="https://www.youtube-nocookie.com/embed/nsrWDmbz5rc" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="width:100%;aspect-ratio:16/9;border-radius:8px;display:block;"></iframe>
+      </div>
+      <div class="partner-card-title">Claude Code in Action</div>
+      <p class="partner-card-desc">Context control, custom commands, MCP servers, GitHub integration, hooks, and the SDK.</p>
+      <a href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank" class="partner-link">Open Course →</a>
+    </div>
+
+  </div>
+</div>
+
+<div class="filter-section">
+  <div class="filter-label">// Filter by category</div>
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="general">General Claude</button>
+    <button class="filter-btn" data-filter="developer">Developer / API</button>
+    <button class="filter-btn" data-filter="mcp">MCP</button>
+    <button class="filter-btn" data-filter="agents">Agents</button>
+    <button class="filter-btn" data-filter="fluency">AI Fluency</button>
+  </div>
+</div>
+
+<!-- GENERAL CLAUDE -->
+<div class="section-header">
+  <span class="section-label">// General Claude</span>
+  <div class="section-line"></div>
+  <span class="section-count">3 Courses</span>
+</div>
+<div class="courses" id="courses">
+
+  <a class="card" href="https://anthropic.skilljar.com/claude-101" target="_blank" data-category="general">
+    <div class="card-header">
+      <span class="card-num">01</span>
+      <span class="card-badge badge-free">Free + Cert</span>
+    </div>
+    <div class="card-title">Claude 101</div>
+    <p class="card-desc">Learn how to use Claude for everyday work tasks, understand core features, and explore resources for more advanced learning.</p>
+    <div class="card-modules">
+      <span class="module-tag">Meet Claude</span>
+      <span class="module-tag">Projects</span>
+      <span class="module-tag">Artifacts</span>
+      <span class="module-tag">Skills</span>
+      <span class="module-tag">Enterprise Search</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">4 modules · Certificate</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/introduction-to-claude-cowork" target="_blank" data-category="general">
+    <div class="card-header">
+      <span class="card-num">02</span>
+      <span class="card-badge badge-free">Free</span>
+    </div>
+    <div class="card-title">Claude Cowork</div>
+    <p class="card-desc">Claude working directly with your files, folders, and apps — reading, editing, and producing real outputs. Task loops, plugins, file workflows, multi-step work.</p>
+    <div class="card-modules">
+      <span class="module-tag">Task Loop</span>
+      <span class="module-tag">Plugins</span>
+      <span class="module-tag">Chrome</span>
+      <span class="module-tag">Microsoft 365</span>
+      <span class="module-tag">Safety</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">5 modules · Quiz</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/claude-code-101" target="_blank" data-category="general">
+    <div class="card-header">
+      <span class="card-num">03</span>
+      <span class="card-badge badge-free">Free</span>
+    </div>
+    <div class="card-title">Claude Code 101</div>
+    <p class="card-desc">AI coding agent fundamentals. Agentic loops, context windows, tools, permissions, and the Explore → Plan → Code → Commit workflow.</p>
+    <div class="card-modules">
+      <span class="module-tag">CLAUDE.md</span>
+      <span class="module-tag">Plan Mode</span>
+      <span class="module-tag">Subagents</span>
+      <span class="module-tag">MCP</span>
+      <span class="module-tag">Hooks</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">6 modules · Quiz</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+</div>
+
+<!-- DEVELOPER / API -->
+<div class="section-header">
+  <span class="section-label">// Developer / API</span>
+  <div class="section-line"></div>
+  <span class="section-count">5 Courses</span>
+</div>
+<div class="courses">
+
+  <a class="card" href="https://anthropic.skilljar.com/claude-platform-101" target="_blank" data-category="developer">
+    <div class="card-header">
+      <span class="card-num">04</span>
+      <span class="card-badge badge-dev">Developer</span>
+    </div>
+    <div class="card-title">Claude Platform 101</div>
+    <p class="card-desc">Bridge the gap between chatting with Claude and shipping production applications. API requests, agent loops, tool use, extended thinking, managed agents.</p>
+    <div class="card-modules">
+      <span class="module-tag">API Fundamentals</span>
+      <span class="module-tag">Agent Loops</span>
+      <span class="module-tag">Tool Use</span>
+      <span class="module-tag">Extended Thinking</span>
+      <span class="module-tag">Managed Agents</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">7 modules · Assessment</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <div class="card" data-category="developer">
+    <div class="card-header">
+      <span class="card-num">05</span>
+      <span class="card-badge badge-dev">Developer</span>
+    </div>
+    <div class="video-label">Course Overview</div>
+    <iframe src="https://www.youtube-nocookie.com/embed/nsrWDmbz5rc" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="width:100%;aspect-ratio:16/9;border-radius:8px;display:block;"></iframe>
+    <a href="https://anthropic.skilljar.com/page/claude-partner-network-learning-path" target="_blank" class="btn-low-cog">Learn the Partner Network — Low Cog Load</a>
+    <div class="card-title">Claude Code in Action</div>
+    <p class="card-desc">Comprehensive AI coding assistant training. Context management, MCP servers, GitHub integration, hooks, SDK. For teams building AI-powered workflows.</p>
+    <div class="card-modules">
+      <span class="module-tag">Context Control</span>
+      <span class="module-tag">Custom Commands</span>
+      <span class="module-tag">GitHub</span>
+      <span class="module-tag">Hooks</span>
+      <span class="module-tag">Claude Code SDK</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">5 modules · Quiz</span>
+      <a class="card-course-link" href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank">Open Course →</a>
+    </div>
+  </div>
+
+  <div class="card" data-category="developer">
+    <div class="card-header">
+      <span class="card-num">06</span>
+      <span class="card-badge badge-dev">Developer</span>
+    </div>
+    <div class="video-label">Course Overview</div>
+    <iframe src="https://www.youtube-nocookie.com/embed/MWmp-V-Acys" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="width:100%;aspect-ratio:16/9;border-radius:8px;display:block;"></iframe>
+    <a href="https://anthropic.skilljar.com/page/claude-partner-network-learning-path" target="_blank" class="btn-low-cog">Learn the Partner Network — Low Cog Load</a>
+    <div class="card-title">Building with the Claude API</div>
+    <p class="card-desc">Full spectrum: API auth, multi-turn conversations, RAG, tool use, prompt caching, MCP, agents, and Computer Use. Hands-on with Python.</p>
+    <div class="card-modules">
+      <span class="module-tag">RAG</span>
+      <span class="module-tag">Tool Use</span>
+      <span class="module-tag">Prompt Caching</span>
+      <span class="module-tag">Agents</span>
+      <span class="module-tag">Computer Use</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">14 modules · Final Assessment</span>
+      <a class="card-course-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank">Open Course →</a>
+    </div>
+  </div>
+
+  <a class="card" href="https://anthropic.skilljar.com/claude-in-amazon-bedrock" target="_blank" data-category="developer">
+    <div class="card-header">
+      <span class="card-num">07</span>
+      <span class="card-badge badge-dev">AWS · Developer</span>
+    </div>
+    <div class="card-title">Claude on Amazon Bedrock</div>
+    <p class="card-desc">AWS-accredited training. RAG pipelines, tool use via JSON Schema, extended reasoning, vision, MCP on Bedrock. Hands-on with Python + AWS SDK.</p>
+    <div class="card-modules">
+      <span class="module-tag">Bedrock API</span>
+      <span class="module-tag">RAG</span>
+      <span class="module-tag">Tool Use</span>
+      <span class="module-tag">Extended Reasoning</span>
+      <span class="module-tag">MCP</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">11 modules · Assessment</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/claude-with-google-vertex" target="_blank" data-category="developer">
+    <div class="card-header">
+      <span class="card-num">08</span>
+      <span class="card-badge badge-dev">GCP · Developer</span>
+    </div>
+    <div class="card-title">Claude on Vertex AI</div>
+    <p class="card-desc">Full technical training for Google Cloud's Vertex AI. Vision, PDF processing, citations, prompt caching, agent workflows with parallelization and routing patterns.</p>
+    <div class="card-modules">
+      <span class="module-tag">Vertex AI</span>
+      <span class="module-tag">Prompt Engineering</span>
+      <span class="module-tag">RAG</span>
+      <span class="module-tag">Vision</span>
+      <span class="module-tag">Agent Workflows</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">9 modules · Assessment</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+</div>
+
+<!-- MCP -->
+<div class="section-header">
+  <span class="section-label">// Model Context Protocol</span>
+  <div class="section-line"></div>
+  <span class="section-count">2 Courses</span>
+</div>
+<div class="courses">
+
+  <div class="card" data-category="mcp">
+    <div class="card-header">
+      <span class="card-num">09</span>
+      <span class="card-badge badge-mcp">MCP</span>
+    </div>
+    <div class="video-label">Course Overview</div>
+    <iframe src="https://www.youtube-nocookie.com/embed/X-hHagL-nt0" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="width:100%;aspect-ratio:16/9;border-radius:8px;display:block;"></iframe>
+    <a href="https://anthropic.skilljar.com/page/claude-partner-network-learning-path" target="_blank" class="btn-low-cog">Learn the Partner Network — Low Cog Load</a>
+    <div class="card-title">Intro to MCP</div>
+    <p class="card-desc">Build MCP servers and clients using Python. Master the three core primitives — tools, resources, and prompts — to connect Claude to external services.</p>
+    <div class="card-modules">
+      <span class="module-tag">MCP Architecture</span>
+      <span class="module-tag">Python SDK</span>
+      <span class="module-tag">Tools</span>
+      <span class="module-tag">Resources</span>
+      <span class="module-tag">Prompts</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">5 modules · Assessment</span>
+      <a class="card-course-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank">Open Course →</a>
+    </div>
+  </div>
+
+  <a class="card" href="https://anthropic.skilljar.com/model-context-protocol-advanced-topics" target="_blank" data-category="mcp">
+    <div class="card-header">
+      <span class="card-num">10</span>
+      <span class="card-badge badge-mcp">MCP · Advanced</span>
+    </div>
+    <div class="card-title">MCP Advanced Topics</div>
+    <p class="card-desc">Sampling, notifications, transport mechanisms (STDIO + StreamableHTTP), production scaling with load balancers, file access control, and JSON message architecture.</p>
+    <div class="card-modules">
+      <span class="module-tag">Sampling</span>
+      <span class="module-tag">Notifications</span>
+      <span class="module-tag">STDIO Transport</span>
+      <span class="module-tag">SSE / HTTP</span>
+      <span class="module-tag">Production Scale</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">3 modules · Assessment</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+</div>
+
+<!-- AGENTS -->
+<div class="section-header">
+  <span class="section-label">// Agent Systems</span>
+  <div class="section-line"></div>
+  <span class="section-count">2 Courses</span>
+</div>
+<div class="courses">
+
+  <a class="card" href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" data-category="agents">
+    <div class="card-header">
+      <span class="card-num">11</span>
+      <span class="card-badge badge-free">Free</span>
+    </div>
+    <div class="card-title">Agent Skills</div>
+    <p class="card-desc">Create reusable markdown instructions Claude applies automatically. Build, configure, share, and troubleshoot Skills across teams and enterprise deployments.</p>
+    <div class="card-modules">
+      <span class="module-tag">SKILL.md</span>
+      <span class="module-tag">Frontmatter</span>
+      <span class="module-tag">Tool Restrictions</span>
+      <span class="module-tag">Team Sharing</span>
+      <span class="module-tag">Troubleshooting</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">6 modules</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/introduction-to-subagents" target="_blank" data-category="agents">
+    <div class="card-header">
+      <span class="card-num">12</span>
+      <span class="card-badge badge-free">Free</span>
+    </div>
+    <div class="card-title">Subagents</div>
+    <p class="card-desc">Build specialized subagents to manage context, delegate tasks, and isolate work. Design structured outputs, set tool limits, and know when delegation is worth it.</p>
+    <div class="card-modules">
+      <span class="module-tag">Context Windows</span>
+      <span class="module-tag">/agents Command</span>
+      <span class="module-tag">Structured Output</span>
+      <span class="module-tag">Anti-Patterns</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">4 modules</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+</div>
+
+<!-- AI FLUENCY -->
+<div class="section-header">
+  <span class="section-label">// AI Fluency</span>
+  <div class="section-line"></div>
+  <span class="section-count">7 Courses</span>
+</div>
+<div class="courses">
+
+  <a class="card" href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" data-category="fluency">
+    <div class="card-header">
+      <span class="card-num">13</span>
+      <span class="card-badge badge-free">Free + Cert</span>
+    </div>
+    <div class="card-title">AI Fluency: Framework</div>
+    <p class="card-desc">The 4D Framework — Delegation, Description, Discernment, Diligence. How to collaborate with AI effectively, efficiently, ethically, and safely.</p>
+    <div class="card-modules">
+      <span class="module-tag">4D Framework</span>
+      <span class="module-tag">Delegation</span>
+      <span class="module-tag">Discernment</span>
+      <span class="module-tag">Diligence</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">7 modules · Certificate</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/ai-capabilities-and-limitations" target="_blank" data-category="fluency">
+    <div class="card-header">
+      <span class="card-num">14</span>
+      <span class="card-badge badge-free">Free</span>
+    </div>
+    <div class="card-title">AI Capabilities & Limits</div>
+    <p class="card-desc">Build a working mental model of how AI behaves and why. Next token prediction, knowledge, working memory, steerability — with practical exercises for each.</p>
+    <div class="card-modules">
+      <span class="module-tag">Token Prediction</span>
+      <span class="module-tag">Knowledge Limits</span>
+      <span class="module-tag">Working Memory</span>
+      <span class="module-tag">Steerability</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">7 modules · Quiz</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/ai-fluency-for-small-businesses" target="_blank" data-category="fluency">
+    <div class="card-header">
+      <span class="card-num">15</span>
+      <span class="card-badge badge-free">Free + Cert</span>
+    </div>
+    <div class="card-title">AI Fluency: Small Business</div>
+    <p class="card-desc">Practical AI for owner-operators. Built with PayPal and real small business partners. Customer service, operations, supply chain, management — 4D in practice.</p>
+    <div class="card-modules">
+      <span class="module-tag">Operations</span>
+      <span class="module-tag">Workflow Augmentation</span>
+      <span class="module-tag">Human in the Loop</span>
+      <span class="module-tag">Transparent AI Use</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">16 modules · Certificate</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/ai-fluency-for-nonprofits" target="_blank" data-category="fluency">
+    <div class="card-header">
+      <span class="card-num">16</span>
+      <span class="card-badge badge-free">Free</span>
+    </div>
+    <div class="card-title">AI Fluency: Nonprofits</div>
+    <p class="card-desc">Fundraising, communications, program delivery, operations, leadership. Boost organizational impact while maintaining mission alignment. Built with GivingTuesday.</p>
+    <div class="card-modules">
+      <span class="module-tag">Research with AI</span>
+      <span class="module-tag">Writing with AI</span>
+      <span class="module-tag">Data Analysis</span>
+      <span class="module-tag">Privacy</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">5 modules · Certificate</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/ai-fluency-for-educators" target="_blank" data-category="fluency">
+    <div class="card-header">
+      <span class="card-num">17</span>
+      <span class="card-badge badge-free">Free + Cert</span>
+    </div>
+    <div class="card-title">AI Fluency: Educators</div>
+    <p class="card-desc">For faculty and instructional designers. Apply AI Fluency into teaching practice, course design, learning outcomes, and institutional strategy.</p>
+    <div class="card-modules">
+      <span class="module-tag">Course Design</span>
+      <span class="module-tag">Learning Outcomes</span>
+      <span class="module-tag">Assignments</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">8 modules · Certificate</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/ai-fluency-for-students" target="_blank" data-category="fluency">
+    <div class="card-header">
+      <span class="card-num">18</span>
+      <span class="card-badge badge-free">Free + Cert</span>
+    </div>
+    <div class="card-title">AI Fluency: Students</div>
+    <p class="card-desc">Develop AI competency for academic performance, career planning, and professional development. AI as a learning partner — with diligence and discernment.</p>
+    <div class="card-modules">
+      <span class="module-tag">Learning Partner</span>
+      <span class="module-tag">Career Planning</span>
+      <span class="module-tag">Human in the Loop</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">7 modules · Certificate</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+  <a class="card" href="https://anthropic.skilljar.com/teaching-ai-fluency" target="_blank" data-category="fluency">
+    <div class="card-header">
+      <span class="card-num">19</span>
+      <span class="card-badge badge-free">Free + Cert</span>
+    </div>
+    <div class="card-title">Teaching AI Fluency</div>
+    <p class="card-desc">Teach and assess the 4D Framework in instructor-led settings. Delegation-Diligence and Description-Discernment loops, assignment design, disciplinary AI impact.</p>
+    <div class="card-modules">
+      <span class="module-tag">Instructor-Led</span>
+      <span class="module-tag">Assessment Design</span>
+      <span class="module-tag">4D Loops</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-meta">4 modules · Certificate</span>
+      <div class="card-arrow">→</div>
+    </div>
+  </a>
+
+</div>
+
+<div class="cta-banner">
+  <div class="cta-inner">
+    <div class="cta-text">
+      <h2>Ready to build your AI OS?</h2>
+      <p>eCon Growth builds all three: operations that run themselves, marketing that compounds, financial structure that holds.</p>
+    </div>
+    <a href="https://econ-growth.com" target="_blank" class="btn-primary">Talk to eCon Growth →</a>
+  </div>
+</div>
+
+<footer style="border-top: 1px solid var(--border); padding: 32px 48px; display:flex; justify-content:space-between; align-items:center; max-width:1200px; margin:0 auto;">
+  <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;">// ECON-GROWTH.COM · AI OPERATOR RESOURCES</span>
+  <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:.1em;">SOURCE: ANTHROPIC.SKILLJAR.COM · JUNE 2026</span>
+</footer>
+
+<script>
+  // Frosted nav on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Filter logic
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.removeAttribute('data-hidden');
+        } else {
+          card.setAttribute('data-hidden', 'true');
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

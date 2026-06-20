@@ -1,0 +1,200 @@
+/* ═══════════════════════════════════════════════════════
+   CINEMA-MAX — Iron Man Jarvis layer
+   Lock-on targeting · arc reactor · data panels · heartbeat
+   Layers on top of cinema.css + cinema-pro.css ═════════ */
+
+/* ═══ GLOBAL HEARTBEAT — the suit is powered ═══ */
+:root{--hb:0}
+body.cine-hud-on{animation:cineHB 2.6s ease-in-out infinite}
+@keyframes cineHB{
+  0%,40%,100%{--hb:0}
+  10%{--hb:1}
+  18%{--hb:.4}
+  26%{--hb:.8}
+}
+/* Brackets pulse with heartbeat */
+body.cine-hud-on .cine-hud-bracket{
+  animation:cineHudHB 2.6s ease-in-out infinite;
+}
+@keyframes cineHudHB{
+  0%,40%,100%{border-color:rgba(33,230,138,.55);box-shadow:none}
+  10%{border-color:rgba(33,230,138,1);box-shadow:0 0 14px rgba(33,230,138,.45)}
+  20%{border-color:rgba(33,230,138,.7)}
+  28%{border-color:rgba(33,230,138,.9);box-shadow:0 0 8px rgba(33,230,138,.3)}
+}
+
+/* ═══ LOCK-ON TARGETING BRACKETS ═══ */
+.cine-lock{
+  position:fixed;pointer-events:none;z-index:99400;
+  opacity:0;transition:opacity .18s ease-out;
+}
+.cine-lock.live{opacity:1}
+.cine-lock-corner{
+  position:absolute;width:18px;height:18px;
+  border:1.5px solid #21E68A;
+  filter:drop-shadow(0 0 6px rgba(33,230,138,.7));
+}
+.cine-lock-corner.tl{top:-6px;left:-6px;border-right:none;border-bottom:none}
+.cine-lock-corner.tr{top:-6px;right:-6px;border-left:none;border-bottom:none}
+.cine-lock-corner.bl{bottom:-6px;left:-6px;border-right:none;border-top:none}
+.cine-lock-corner.br{bottom:-6px;right:-6px;border-left:none;border-top:none}
+.cine-lock-label{
+  position:absolute;left:0;top:-26px;
+  display:flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:#21E68A;text-shadow:0 0 8px rgba(33,230,138,.5);
+  white-space:nowrap;
+}
+.cine-lock-label .dot{width:5px;height:5px;border-radius:50%;background:#21E68A;box-shadow:0 0 8px rgba(33,230,138,.8);animation:cineHudDot 1.2s infinite}
+.cine-lock-coord{
+  position:absolute;right:0;bottom:-22px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.12em;
+  color:rgba(33,230,138,.7);
+}
+/* Lock-on animation — brackets snap in */
+@keyframes cineLockSnap{
+  0%{transform:scale(1.6);opacity:0}
+  100%{transform:scale(1);opacity:1}
+}
+.cine-lock.live .cine-lock-corner{animation:cineLockSnap .28s cubic-bezier(.4,1.6,.4,1) both}
+.cine-lock.live .cine-lock-corner.tr{animation-delay:.03s}
+.cine-lock.live .cine-lock-corner.bl{animation-delay:.06s}
+.cine-lock.live .cine-lock-corner.br{animation-delay:.09s}
+.cine-lock.live .cine-lock-label,
+.cine-lock.live .cine-lock-coord{animation:cineLockFade .35s .14s ease-out both}
+@keyframes cineLockFade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ ARC REACTOR — rotating in the hero center ═══ */
+.cine-reactor{
+  position:absolute;left:50%;top:50%;
+  width:780px;height:780px;
+  transform:translate(-50%,-50%);
+  pointer-events:none;z-index:1;
+  opacity:0;transition:opacity 1.6s ease-out 1.2s;
+  mix-blend-mode:screen;
+}
+body.cine-hud-on .cine-reactor{opacity:.65}
+.cine-reactor-ring{
+  position:absolute;inset:0;
+  border:1px solid rgba(33,230,138,.32);
+  border-radius:50%;
+  animation:cineReactorSpin 40s linear infinite;
+}
+.cine-reactor-ring::before,
+.cine-reactor-ring::after{
+  content:"";position:absolute;
+  background:#21E68A;
+  box-shadow:0 0 14px rgba(33,230,138,.7);
+}
+.cine-reactor-ring::before{top:-3px;left:50%;width:6px;height:6px;border-radius:50%;transform:translateX(-50%)}
+.cine-reactor-ring::after{top:50%;right:-3px;width:6px;height:6px;border-radius:50%;transform:translateY(-50%)}
+.cine-reactor-ring.r2{inset:80px;animation-direction:reverse;animation-duration:55s;border-color:rgba(33,230,138,.22)}
+.cine-reactor-ring.r3{inset:160px;animation-duration:30s;border-color:rgba(33,230,138,.42);border-style:dashed}
+.cine-reactor-ring.r4{inset:260px;animation-duration:18s;animation-direction:reverse;border-color:rgba(33,230,138,.55)}
+.cine-reactor-core{
+  position:absolute;left:50%;top:50%;
+  width:110px;height:110px;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(33,230,138,.9) 0%,rgba(33,230,138,.5) 30%,rgba(33,230,138,.15) 60%,transparent 80%);
+  border-radius:50%;
+  filter:blur(8px);
+  animation:cineReactorPulse 2.6s ease-in-out infinite;
+}
+@keyframes cineReactorSpin{to{transform:rotate(360deg)}}
+@keyframes cineReactorPulse{
+  0%,40%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}
+  10%{transform:translate(-50%,-50%) scale(1.18);opacity:1}
+  20%{transform:translate(-50%,-50%) scale(1.05);opacity:.7}
+}
+.cine-reactor-tick{
+  position:absolute;left:50%;top:0;height:100%;
+  transform-origin:bottom center;
+}
+.cine-reactor-tick::before{
+  content:"";position:absolute;top:0;left:-1px;
+  width:2px;height:14px;background:rgba(33,230,138,.45);
+  box-shadow:0 0 6px rgba(33,230,138,.45);
+}
+@media(max-width:760px){.cine-reactor{width:480px;height:480px}.cine-reactor-ring.r3{inset:100px}.cine-reactor-ring.r4{inset:160px}}
+
+/* ═══ HOLOGRAPHIC DATA PANELS in hero ═══ */
+.cine-panel{
+  position:absolute;z-index:2;
+  background:rgba(7,10,15,.4);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(33,230,138,.22);
+  padding:9px 13px 9px 13px;
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;
+  color:rgba(234,240,255,.7);letter-spacing:.06em;
+  pointer-events:none;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 1s ease-out,transform 1s ease-out;
+}
+.cine-panel.live{opacity:1;transform:translateY(0)}
+.cine-panel::before{content:"";position:absolute;left:-1px;top:-1px;width:8px;height:8px;border-left:1px solid #21E68A;border-top:1px solid #21E68A}
+.cine-panel::after{content:"";position:absolute;right:-1px;bottom:-1px;width:8px;height:8px;border-right:1px solid #21E68A;border-bottom:1px solid #21E68A}
+.cine-panel .lbl{font-size:8px;color:rgba(33,230,138,.7);letter-spacing:.18em;text-transform:uppercase;display:block;margin-bottom:3px}
+.cine-panel .val{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.5px;color:#EAF0FF;line-height:1}
+.cine-panel .val .c{color:#21E68A}
+.cine-panel .bar{display:inline-block;width:60px;height:3px;background:rgba(33,230,138,.18);border-radius:2px;overflow:hidden;margin-top:5px;position:relative}
+.cine-panel .bar::after{content:"";position:absolute;left:0;top:0;height:100%;width:var(--w,68%);background:linear-gradient(90deg,#21E68A,rgba(33,230,138,.4));box-shadow:0 0 8px rgba(33,230,138,.5)}
+/* Panel placements — desktop only, asymmetric like Iron Man HUD */
+.cine-panel.p1{top:14%;left:6%;width:170px}
+.cine-panel.p2{top:22%;right:6%;width:180px}
+.cine-panel.p3{bottom:18%;left:7%;width:160px}
+.cine-panel.p4{bottom:14%;right:7%;width:190px}
+.cine-panel.p5{top:50%;left:3%;width:130px;transform:translateY(-50%)}
+.cine-panel.p5.live{transform:translateY(-50%)}
+.cine-panel.p6{top:50%;right:3%;width:140px;transform:translateY(-50%)}
+.cine-panel.p6.live{transform:translateY(-50%)}
+@media(max-width:1100px){.cine-panel.p5,.cine-panel.p6{display:none}}
+@media(max-width:760px){.cine-panel{display:none}}
+
+/* Connector line from panel to target */
+.cine-panel-line{position:absolute;height:1px;background:linear-gradient(90deg,rgba(33,230,138,.4),transparent);transform-origin:left;pointer-events:none}
+
+/* ═══ BIGGER + RICHER RETICLE ═══ */
+.cine-reticle{width:64px;height:64px}
+.cine-reticle.hover{width:96px;height:96px}
+.cine-reticle::before{border-width:1.5px}
+/* Outer dashed circle handled by ::before; add another ring via wrap */
+.cine-reticle-ring2{
+  position:absolute;left:50%;top:50%;
+  width:140%;height:140%;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(33,230,138,.22);
+  border-radius:50%;
+  border-style:dotted;
+  animation:cineReticleSpin 28s linear infinite reverse;
+  pointer-events:none;
+}
+.cine-reticle-tick{
+  position:absolute;left:50%;top:50%;width:1px;height:6px;
+  background:rgba(33,230,138,.7);
+  transform-origin:center 0;
+}
+.cine-reticle-tick:nth-child(2){transform:translate(-50%,-50%) rotate(0deg) translateY(-40px)}
+.cine-reticle-tick:nth-child(3){transform:translate(-50%,-50%) rotate(90deg) translateY(-40px)}
+.cine-reticle-tick:nth-child(4){transform:translate(-50%,-50%) rotate(180deg) translateY(-40px)}
+.cine-reticle-tick:nth-child(5){transform:translate(-50%,-50%) rotate(270deg) translateY(-40px)}
+.cine-reticle-readout{
+  position:absolute;left:calc(100% + 12px);top:50%;
+  transform:translateY(-50%);
+  font-family:'JetBrains Mono',monospace;
+  font-size:8.5px;letter-spacing:.14em;
+  color:rgba(33,230,138,.85);text-shadow:0 0 6px rgba(33,230,138,.5);
+  white-space:nowrap;text-transform:uppercase;
+  opacity:0;transition:opacity .2s;
+}
+.cine-reticle.hover .cine-reticle-readout{opacity:1}
+
+/* ═══ HERO PANELS POSITIONING — ensure hero is anchor */
+.hero{position:relative}
+
+/* Respect reduced motion */
+@media(prefers-reduced-motion:reduce){
+  .cine-reactor,.cine-reactor-ring,.cine-reactor-core,.cine-panel,.cine-lock{animation:none!important;transition:none!important}
+  body.cine-hud-on{animation:none}
+}

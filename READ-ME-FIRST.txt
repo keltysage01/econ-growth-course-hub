@@ -1,0 +1,39 @@
+eCon GROWTH — WEBSITE (for Kelty)
+=================================
+
+Thanks for putting your spin on this! Here's everything you need.
+
+────────────────────────────────────────────────
+1) TO SEE THE SITE (no tools to install)
+────────────────────────────────────────────────
+• On a Mac: double-click  START-PREVIEW.command
+  → it opens the site in your browser at http://localhost:8123
+  (If macOS warns "unidentified developer": right-click it → Open → Open.)
+
+• On Windows / no terminal: install the free "Live Server" extension in
+  VS Code, open this folder, right-click index.html → "Open with Live Server".
+
+Important: just double-clicking index.html directly WON'T load the styles
+(the images/fonts use absolute paths). Use the preview above instead.
+
+────────────────────────────────────────────────
+2) WHAT TO EDIT
+────────────────────────────────────────────────
+• Page content + layout:  the .html files (index.html is the homepage,
+  about.html, marketing.html, financial-planning.html, etc.)
+• The cinematic look / colors / animations:
+  assets/cinema/cinema-v2.css, cinema-v3-cine.css, cinema-v4-systems.css
+• Brand green is  #21E68A  · backgrounds are near-black (#070A0F).
+
+Edit in any text editor (VS Code is great + free). Save, refresh the
+preview to see changes.
+
+────────────────────────────────────────────────
+3) WHEN YOU'RE DONE — SEND IT BACK
+────────────────────────────────────────────────
+• Right-click this whole folder → Compress → it makes a .zip
+• Send that .zip back to Kris.
+• We'll review your changes and push them live to econ-growth.com.
+
+Don't worry about breaking anything — we diff your version against the
+live one, so nothing goes live until we've looked it over. Have fun with it!

@@ -1,0 +1,111 @@
+/* ═══════════════════════════════════════════════════════
+   CINEMA-MOV — bigger movie effects
+   Section title-card drops · headline boot-construct
+   Quick white flash on keymoments · wipe transitions
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── SECTION TITLE-CARD DROPS ──────────────────────── */
+.cine-card-drop{
+  position:fixed;left:0;right:0;top:50%;transform:translateY(-50%);
+  z-index:9700;pointer-events:none;text-align:center;
+  opacity:0;
+}
+.cine-card-drop.live{animation:cineCardDrop 2.6s cubic-bezier(.4,.0,.2,1) forwards}
+@keyframes cineCardDrop{
+  0%{opacity:0;transform:translateY(-50%) scale(.92);filter:blur(8px)}
+  12%{opacity:1;transform:translateY(-50%) scale(1);filter:blur(0)}
+  72%{opacity:1;transform:translateY(-50%) scale(1.03)}
+  100%{opacity:0;transform:translateY(-50%) scale(1.08);filter:blur(6px)}
+}
+.cine-card-drop .num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(120px,18vw,260px);
+  letter-spacing:1px;line-height:.9;
+  color:transparent;-webkit-text-stroke:1.5px rgba(33,230,138,.85);
+  text-shadow:0 0 60px rgba(33,230,138,.4);
+  display:block;
+}
+.cine-card-drop .lbl{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(36px,5.5vw,80px);
+  letter-spacing:8px;line-height:1;
+  color:#EAF0FF;text-shadow:0 0 30px rgba(7,10,15,.9),0 0 14px rgba(33,230,138,.5);
+  margin-top:-12px;display:block;
+}
+.cine-card-drop .meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:.5em;text-transform:uppercase;
+  color:rgba(33,230,138,.7);margin-top:14px;display:block;
+}
+.cine-card-drop::before{
+  content:"";position:absolute;left:50%;top:50%;
+  width:2px;height:0;background:#21E68A;
+  box-shadow:0 0 18px rgba(33,230,138,.7);
+  transform:translate(-50%,-50%);
+}
+.cine-card-drop.live::before{animation:cineCardBar 2.6s cubic-bezier(.4,.0,.2,1) forwards}
+@keyframes cineCardBar{
+  0%{height:0;width:2px}
+  20%{height:140px;width:2px}
+  60%{height:140px;width:380px;left:50%;transform:translate(-50%,-50%)}
+  100%{height:140px;width:380px;opacity:0}
+}
+
+/* Scrim behind the title card so the section content fades out under it briefly */
+.cine-card-scrim{
+  position:fixed;inset:0;z-index:9650;pointer-events:none;
+  background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(7,10,15,.85) 0%,rgba(7,10,15,.5) 50%,transparent 90%);
+  opacity:0;
+}
+.cine-card-scrim.live{animation:cineCardScrim 2.6s ease-out forwards}
+@keyframes cineCardScrim{
+  0%{opacity:0}
+  15%{opacity:1}
+  75%{opacity:.7}
+  100%{opacity:0}
+}
+
+/* ─── KEY-MOMENT WHITE FLASH ────────────────────────── */
+.cine-flash{
+  position:fixed;inset:0;z-index:9800;pointer-events:none;
+  background:rgba(255,255,255,0);
+}
+.cine-flash.live{animation:cineFlash .55s ease-out forwards}
+@keyframes cineFlash{
+  0%{background:rgba(255,255,255,0)}
+  10%{background:rgba(255,255,255,.55)}
+  100%{background:rgba(255,255,255,0)}
+}
+
+/* ─── HORIZONTAL WIPE between scenes ─────────────────── */
+.cine-wipe{
+  position:fixed;left:0;top:0;bottom:0;width:0;
+  background:linear-gradient(90deg,transparent,rgba(33,230,138,.18),rgba(33,230,138,.32),rgba(33,230,138,.18),transparent);
+  z-index:9550;pointer-events:none;
+  mix-blend-mode:screen;
+}
+.cine-wipe.live{animation:cineWipe .9s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes cineWipe{
+  0%{left:0;width:0}
+  50%{width:240px}
+  100%{left:100%;width:0}
+}
+
+/* ─── HEADLINE BOOT-CONSTRUCT ───────────────────────── */
+.cine-construct-char{
+  display:inline-block;opacity:0;
+  transform:translateY(8px) scale(.7);
+  filter:blur(4px);
+  transition:none;
+}
+.cine-construct-char.live{
+  opacity:1;transform:none;filter:none;
+  transition:opacity .32s ease-out,transform .32s ease-out,filter .32s ease-out;
+}
+.cine-construct-char.green{color:#21E68A}
+
+/* Reduce motion */
+@media(prefers-reduced-motion:reduce){
+  .cine-card-drop,.cine-flash,.cine-wipe,.cine-card-scrim{display:none!important}
+  .cine-construct-char{opacity:1;transform:none;filter:none;transition:none}
+}

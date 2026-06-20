@@ -1,0 +1,91 @@
+/* ═══════════════════════════════════════════════════════
+   CINEMA-NUCLEAR — aggressive perf rescue, loads LAST.
+   Kills every continuous-paint layer.
+   Keeps: letterbox, brackets, lock-on, title cards,
+          chapters, glitch hover, color-grade per section.
+   ═══════════════════════════════════════════════════════ */
+
+/* ───── Kill the WebGL hero atmosphere entirely */
+#cine-atmosphere{display:none!important}
+
+/* ───── Kill the 3 huge blurred animated orbs (90px+ blur filter — GPU killer) */
+.orb-1,.orb-2,.orb-3,.scanline{display:none!important}
+
+/* ───── Kill the arc reactor (rotating rings + glowing core) */
+.cine-reactor,.cine-reactor-ring,.cine-reactor-core{display:none!important}
+
+/* ───── Kill all full-viewport effect overlays */
+.cine-grade,.cine-visor,.cine-vhs-scan,.cine-vhs-sweep,
+.cine-flare,.cine-spotlight,.cine-spot-ring,
+.cine-center-cross{display:none!important}
+
+/* ───── Kill data panels (they were live-ticking + paint cost) */
+.cine-panel{display:none!important}
+
+/* ───── Kill boot log (small but constant DOM churn) */
+.cine-bootlog{display:none!important}
+
+/* ───── Stop ALL heartbeat / pulse / spin animations on HUD elements */
+.cine-hud-bracket,
+.cine-hud-bracket::before,
+.cine-hud-readout .dot,
+.cine-hud-status .pip,
+.cine-reactor-ring,
+.cine-reactor-core,
+.cine-reactor-tick{
+  animation:none!important;
+}
+.cine-hud-bracket{
+  border-color:rgba(33,230,138,.55)!important;
+  box-shadow:none!important;
+}
+.cine-hud-bracket::before{
+  background:rgba(33,230,138,.85)!important;
+  box-shadow:0 0 8px rgba(33,230,138,.5)!important;
+  transform:none!important;
+  opacity:1!important;
+}
+
+/* ───── Reduce backdrop-filter — already in perf.css but ensure */
+.cine-hud-readout,
+.cine-hud-status,
+.cine-sound{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  background:rgba(7,10,15,.78)!important;
+}
+
+/* (Removed display:none on .gone — was killing the fade-out transition) */
+
+/* ───── Lock-on stays — it's event-driven & cheap */
+/* Title cards stay — they're event-driven & cheap */
+/* Letterbox bars stay — static painted layers */
+/* HUD brackets stay — STATIC now (no animation) */
+/* Chapters stay — event-driven */
+
+/* ───── Disable additional CSS animations from base layer */
+body::before{display:none!important} /* noise SVG bg */
+@keyframes pulse-ring{from,to{transform:none;opacity:1}}
+.logo-dot{animation:none!important;box-shadow:0 0 6px rgba(33,230,138,.5)!important}
+.badge-dot{animation:none!important}
+
+/* ───── Footer watermark — kill if expensive */
+.footer-watermark{display:none!important}
+.footer::before{animation:none!important;background:rgba(33,230,138,.3)!important}
+
+/* ───── Cap dpr-related overdraw on heavy elements */
+.svc-card::before,.svc-card::after{
+  transition:opacity .15s!important;
+}
+
+/* ───── Disable beam-spin around featured card */
+.svc-card.featured::after{
+  animation:none!important;
+  background:rgba(33,230,138,.18)!important;
+}
+
+/* Mobile gets EVERY layer off */
+@media(max-width:1100px){
+  .cine-hud,.cine-letterbox,.cine-chapters,
+  .cine-sound,.cine-hud-status{display:none!important}
+}

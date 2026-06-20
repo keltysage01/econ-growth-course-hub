@@ -1,0 +1,188 @@
+/* ═══════════════════════════════════════════════════════
+   CINEMA-TUNE — readability + HUD-alive pass
+   Pulls chrome back behind the message,
+   adds visor curvature, center crosshair, ticking data
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── HERO READABILITY: dim the chrome behind the words ─ */
+
+/* Strong scrim directly behind hero text block */
+.hero-inner{
+  position:relative;z-index:5;
+}
+.hero-inner::before{
+  content:"";position:absolute;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  width:130%;height:130%;
+  background:radial-gradient(ellipse 60% 55% at 50% 50%,
+    rgba(7,10,15,.78) 0%,
+    rgba(7,10,15,.55) 35%,
+    rgba(7,10,15,.18) 60%,
+    transparent 80%);
+  pointer-events:none;z-index:-1;
+  filter:blur(2px);
+}
+
+/* Headline gets a green soft halo so it lifts off the chrome */
+.hero-h1{
+  position:relative;z-index:2;
+  text-shadow:0 0 30px rgba(7,10,15,.95),0 0 12px rgba(7,10,15,.95);
+}
+.hero-h1 .green{text-shadow:0 0 24px rgba(33,230,138,.4),0 0 12px rgba(7,10,15,.95)}
+
+.hero-body{position:relative;z-index:2;text-shadow:0 0 14px rgba(7,10,15,.9)}
+.hero-btns{position:relative;z-index:3}
+
+/* Pull back the WebGL atmosphere intensity so it doesn't burn the text */
+#cine-atmosphere.live{opacity:.55!important}
+
+/* Pull the arc reactor's CORE back — keep rings, dim the glow burning behind text */
+.cine-reactor-core{
+  filter:blur(14px)!important;
+  opacity:.45!important;
+}
+body.cine-hud-on .cine-reactor{opacity:.42!important}
+
+/* Make sure the arc reactor sits BEHIND the hero content */
+.cine-reactor{z-index:0!important}
+
+/* Smaller, dimmer data panels pushed further to the edges */
+.cine-panel{
+  background:rgba(7,10,15,.62)!important;
+  border-color:rgba(33,230,138,.16)!important;
+  font-size:9px!important;
+  padding:7px 11px!important;
+  opacity:.78;
+}
+.cine-panel.live{opacity:.85}
+.cine-panel .val{font-size:18px!important}
+.cine-panel.p1{top:11%;left:3%;width:158px}
+.cine-panel.p2{top:11%;right:3%;width:170px}
+.cine-panel.p3{bottom:14%;left:3%;width:150px}
+.cine-panel.p4{bottom:14%;right:3%;width:178px}
+.cine-panel.p5{top:50%;left:1.5%;width:118px}
+.cine-panel.p6{top:50%;right:1.5%;width:128px}
+@media(max-width:1280px){.cine-panel.p5,.cine-panel.p6{display:none}}
+
+/* Damp the VHS scanlines slightly */
+.cine-vhs-scan{opacity:0!important}
+body.cine-hud-on .cine-vhs-scan{opacity:.6!important}
+
+/* Smaller boot log — peripheral, not central */
+.cine-bootlog{
+  width:200px!important;
+  font-size:8.5px!important;
+  bottom:90px!important;
+  color:rgba(33,230,138,.45)!important;
+}
+
+/* ─── HUD UPGRADES: visor curvature + center crosshair ─── */
+
+/* Visor curvature — subtle dark vignette + faint cyan rim at edges */
+.cine-visor{
+  position:fixed;inset:0;z-index:9300;pointer-events:none;
+  opacity:0;transition:opacity 1s ease-out .8s;
+  background:
+    radial-gradient(ellipse 105% 90% at 50% 50%,
+      transparent 65%,
+      rgba(7,10,15,.5) 90%,
+      rgba(7,10,15,.9) 100%);
+}
+.cine-visor::before{
+  content:"";position:absolute;inset:0;
+  box-shadow:
+    inset 0 0 80px rgba(33,230,138,.05),
+    inset 0 0 160px rgba(7,10,15,.7);
+}
+.cine-visor::after{
+  /* Tiny barrel-distortion-feel: subtle inset border */
+  content:"";position:absolute;inset:18px;
+  border:1px solid rgba(33,230,138,.08);
+  border-radius:14px;
+  pointer-events:none;
+}
+body.cine-hud-on .cine-visor{opacity:1}
+
+/* Center HUD crosshair — tiny reticle ALWAYS at the center of viewport */
+.cine-center-cross{
+  position:fixed;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:22px;height:22px;
+  z-index:9350;pointer-events:none;
+  opacity:0;transition:opacity 1s ease-out 1s;
+}
+body.cine-hud-on .cine-center-cross{opacity:.5}
+.cine-center-cross::before,
+.cine-center-cross::after{
+  content:"";position:absolute;
+  background:rgba(33,230,138,.7);
+  box-shadow:0 0 6px rgba(33,230,138,.5);
+}
+.cine-center-cross::before{left:50%;top:0;width:1px;height:8px;transform:translateX(-50%)}
+.cine-center-cross::after{left:0;top:50%;height:1px;width:8px;transform:translateY(-50%)}
+.cine-center-cross .dot{
+  position:absolute;left:50%;top:50%;
+  width:3px;height:3px;border-radius:50%;
+  background:#21E68A;transform:translate(-50%,-50%);
+  box-shadow:0 0 8px rgba(33,230,138,.7);
+  animation:cineCenterPulse 2.6s ease-in-out infinite;
+}
+@keyframes cineCenterPulse{0%,40%,100%{transform:translate(-50%,-50%) scale(1)}10%{transform:translate(-50%,-50%) scale(1.6)}}
+
+/* HUD readout values — bigger + monospace tabular nums (ticking numbers) */
+.cine-hud-readout{
+  font-size:10px!important;
+  padding:6px 12px!important;
+  border-color:rgba(33,230,138,.28)!important;
+}
+.cine-hud-readout.live{color:#21E68A}
+.cine-hud-readout .val{
+  font-variant-numeric:tabular-nums;
+  color:#EAF0FF;letter-spacing:.16em;
+}
+.cine-hud-readout .val.c{color:#21E68A}
+
+/* Top-center system status panel */
+.cine-hud-status{
+  position:fixed;top:74px;left:50%;transform:translateX(-50%);
+  z-index:9400;pointer-events:none;
+  display:flex;align-items:center;gap:14px;
+  background:rgba(7,10,15,.55);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(33,230,138,.22);
+  padding:6px 16px;border-radius:4px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(234,240,255,.7);
+  opacity:0;transition:opacity 1s ease-out 1.2s;
+}
+body.cine-hud-on .cine-hud-status{opacity:1}
+.cine-hud-status .pip{
+  width:6px;height:6px;border-radius:50%;
+  background:#21E68A;box-shadow:0 0 8px rgba(33,230,138,.7);
+  animation:cineHudDot 1.4s infinite;
+}
+.cine-hud-status .grn{color:#21E68A}
+.cine-hud-status .sep{opacity:.4}
+@media(max-width:760px){.cine-hud-status{display:none}}
+
+/* Make the HUD readouts position better with the new status bar */
+.cine-hud-bracket.tl,.cine-hud-bracket.tr{top:80px}
+.cine-hud-readout.tl,.cine-hud-readout.tr{top:76px}
+
+/* Glitch hover — DIM it (was loud) */
+.cine-glitch:hover{
+  text-shadow:
+    -.8px 0 0 rgba(255,40,40,.55),
+    .8px 0 0 rgba(40,200,255,.55)!important;
+  animation:none!important;
+}
+
+/* Sound toggle + chapters: push above larger letterbox */
+.cine-chapters{bottom:96px!important}
+.cine-sound{bottom:30px!important;left:30px!important}
+
+/* Reduce motion fallback */
+@media(prefers-reduced-motion:reduce){
+  .cine-center-cross,.cine-visor,.cine-hud-status{opacity:0!important}
+}

@@ -1,0 +1,35 @@
+/* Self-hosted WOFF2 fonts — 61% smaller than TTF.
+   Total payload: ~236KB across 8 files, ~80KB on the critical path. */
+
+@font-face{
+  font-family:'Bebas Neue';font-style:normal;font-weight:400;font-display:swap;
+  src:url("/assets/fonts/BebasNeue-Regular.woff2") format("woff2");
+}
+@font-face{
+  font-family:'JetBrains Mono';font-style:normal;font-weight:300;font-display:swap;
+  src:url("/assets/fonts/JetBrainsMono-300.woff2") format("woff2");
+}
+@font-face{
+  font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;
+  src:url("/assets/fonts/JetBrainsMono-400.woff2") format("woff2");
+}
+@font-face{
+  font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;
+  src:url("/assets/fonts/JetBrainsMono-500.woff2") format("woff2");
+}
+@font-face{
+  font-family:'Syne';font-style:normal;font-weight:400;font-display:swap;
+  src:url("/assets/fonts/Syne-400.woff2") format("woff2");
+}
+@font-face{
+  font-family:'Syne';font-style:normal;font-weight:600;font-display:swap;
+  src:url("/assets/fonts/Syne-600.woff2") format("woff2");
+}
+@font-face{
+  font-family:'Syne';font-style:normal;font-weight:700;font-display:swap;
+  src:url("/assets/fonts/Syne-700.woff2") format("woff2");
+}
+@font-face{
+  font-family:'Syne';font-style:normal;font-weight:800;font-display:swap;
+  src:url("/assets/fonts/Syne-800.woff2") format("woff2");
+}

@@ -1,0 +1,72 @@
+/* ═══════════════════════════════════════════════════════
+   CINEMA-LITE — perf rescue overrides (loads LAST)
+   Disables the GPU-killing layers; keeps the look
+   ═══════════════════════════════════════════════════════ */
+
+/* KILL custom cursor reticle (highest mousemove cost) */
+.cine-reticle,
+.cine-reticle-ring2,
+.cine-reticle-tick,
+.cine-reticle-readout,
+.cine-reticle-cross,
+.cine-spot-ring{
+  display:none!important;
+}
+/* Bring back the real OS cursor */
+body.cine-hud-on,
+body.cine-hud-on *{cursor:auto!important}
+body.cine-hud-on a,
+body.cine-hud-on button,
+body.cine-hud-on [role="button"],
+body.cine-hud-on input{cursor:pointer!important}
+body.cine-hud-on input[type="text"],
+body.cine-hud-on input[type="email"],
+body.cine-hud-on textarea{cursor:text!important}
+
+/* KILL VHS scanline overlay + sweep (paint-heavy on full viewport) */
+.cine-vhs-scan,
+.cine-vhs-sweep{display:none!important}
+
+/* KILL spotlight tracking (rAF cost) — keep as static dim glow only */
+.cine-spotlight{
+  background:radial-gradient(800px circle at 50% 50%,rgba(33,230,138,.04),transparent 60%)!important;
+}
+
+/* SIMPLIFY arc reactor — 2 rings, no central tick marks rotating */
+.cine-reactor-tick{display:none!important}
+.cine-reactor-ring.r2,
+.cine-reactor-ring.r3{display:none!important}
+.cine-reactor{opacity:.32!important}
+
+/* DAMP boot log to fixed 3 lines, no continuous updates */
+.cine-bootlog{
+  max-height:54px!important;
+  width:180px!important;
+  bottom:96px!important;
+}
+
+/* DAMP heartbeat — only on a couple HUD brackets, not all four */
+.cine-hud-bracket.tr,
+.cine-hud-bracket.bl{animation:none!important}
+
+/* CHEAPER backdrop: kill mix-blend-mode entirely */
+.cine-spotlight,
+.cine-grade,
+.cine-flare{mix-blend-mode:normal!important}
+
+/* CHEAPER atmosphere — drop opacity, less overdraw cost */
+#cine-atmosphere{opacity:.32!important}
+#cine-atmosphere.live{opacity:.32!important}
+
+/* Disable construct-char animation entirely (was the bug) */
+.cine-construct-char{
+  display:inline!important;opacity:1!important;
+  transform:none!important;filter:none!important;
+}
+
+/* Mobile + lower-tier — strip even more */
+@media(max-width:1100px){
+  .cine-reactor,.cine-bootlog,.cine-panel,.cine-flare,
+  .cine-hud-status,.cine-center-cross,.cine-visor{display:none!important}
+  #cine-atmosphere{display:none!important}
+}

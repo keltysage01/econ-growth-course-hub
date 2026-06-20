@@ -1,0 +1,102 @@
+/* ============================================================
+   CINEMA V4 — "Systems" futuristic layer (additive)
+   CRT scanlines · scanning sweep · mission-control telemetry
+   ticker · decrypting text-scramble on headings.
+   Kill switch: window.SYS_OFF = true before script loads.
+   z-band 1184-1188: above content, below v2 HUD/controls (9400+).
+   ============================================================ */
+
+:root { --sys-green: #21e68a; }
+
+/* ---- 1. CRT SCANLINES ------------------------------------- */
+.sys-scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 108;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0) 0px,
+    rgba(0,0,0,0) 2px,
+    rgba(0,0,0,0.22) 3px,
+    rgba(0,0,0,0) 4px);
+  opacity: 0.5;
+  /* PERF: plain alpha (was multiply) — dark lines over content read the same. */
+  /* PERF: static scanlines (painted once). The flicker animation forced a
+     full-viewport re-composite every frame. */
+}
+
+/* ---- 2. SCANNING SWEEP ------------------------------------ */
+.sys-sweep {
+  position: fixed;
+  left: 0; right: 0; top: 0;
+  height: 200px;
+  pointer-events: none;
+  z-index: 1187;
+  background: linear-gradient(
+    to bottom,
+    rgba(33,230,138,0) 0%,
+    rgba(33,230,138,0.035) 55%,
+    rgba(33,230,138,0.09) 90%,
+    rgba(150,255,210,0.55) 99%,
+    rgba(33,230,138,0) 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: sys-sweep 8s cubic-bezier(.4,0,.6,1) infinite;
+  animation-delay: 2.5s;
+}
+@keyframes sys-sweep {
+  0%   { transform: translateY(-220px); opacity: 0; }
+  7%   { opacity: 1; }
+  93%  { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* ---- 3. MISSION-CONTROL TELEMETRY TICKER ------------------ */
+.sys-ticker {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  height: 24px;
+  pointer-events: none;
+  z-index: 120;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to top, rgba(2,6,10,0.82), rgba(2,6,10,0.28) 60%, rgba(2,6,10,0));
+  border-top: 1px solid rgba(33,230,138,0.14);
+}
+.sys-ticker-track {
+  white-space: nowrap;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(33,230,138,0.82);
+  text-shadow: 0 0 10px rgba(33,230,138,0.35);
+  animation: sys-ticker 42s linear infinite;
+  will-change: transform;
+}
+.sys-ticker-track .sys-hot { color: rgba(170,255,220,1); }
+.sys-ticker-track .sys-sep { color: rgba(33,230,138,0.4); margin: 0 14px; }
+@keyframes sys-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---- 4. TEXT SCRAMBLE (heading mid-decrypt state) --------- */
+.section-h2.sys-decrypting { color: rgba(33,230,138,0.92); }
+.section-h2.sys-decrypting .green { color: rgba(150,255,210,0.95); }
+
+/* ---- MOBILE / REDUCED MOTION ------------------------------ */
+@media (max-width: 760px) {
+  .sys-sweep { display: none; }
+  .sys-scanlines { opacity: 0.4; animation: none; }
+  .sys-ticker { height: 18px; }
+  .sys-ticker-track { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sys-sweep { display: none; }
+  .sys-scanlines { animation: none; opacity: 0.4; }
+  .sys-ticker-track { animation-duration: 90s; }
+}

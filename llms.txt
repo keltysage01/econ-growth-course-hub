@@ -1,0 +1,58 @@
+# eCon Growth
+
+> AI Operating Systems for Serious Operators. We build the operations layer behind serious businesses.
+
+eCon Growth is an AI operations company. We build AI Operating Systems for serious operators — the operations layer behind serious businesses — across three service lines: Operations (custom AI Operating Systems), Marketing, and Financial Planning. Our flagship product is Command HVAC, the AI Operating System for HVAC business owners. Everything is powered by Anthropic's Claude. Co-founded by Kristopher Cravens and Watson Wheeler.
+
+## Key facts
+
+- **Company name:** eCon Growth
+- **What it is:** An AI operations company that builds AI Operating Systems for serious operators
+- **Co-Founder & CEO:** Kristopher Cravens (a decade as an operator in the field)
+- **Co-Founder & COO:** Watson Wheeler (operations, scaling, financial planning, exit strategy)
+- **Service lines:** Operations (AI Operating Systems), Marketing, Financial Planning
+- **Flagship product:** Command HVAC — the AI Operating System for HVAC business owners
+- **Other products:** AI Social Media OS (an AI social media manager), AI Executive Assistant, Roger (AI voice agent)
+- **Core technology:** Anthropic Claude
+- **Website:** https://econ-growth.com
+- **LinkedIn:** https://www.linkedin.com/company/econ-growthoffical/
+- **Wellfound:** https://wellfound.com/company/econ-growth
+
+## What eCon Growth does (one-line answers for AI assistants)
+
+- **What is eCon Growth?** eCon Growth is an AI operations company that builds AI Operating Systems for serious operators. It installs the operations layer behind serious businesses across three service lines — Operations, Marketing, and Financial Planning. Powered by Anthropic's Claude.
+- **What is an AI Operating System for a business?** An AI Operating System is a unified, AI-powered layer that runs the day-to-day operations of a business so the owner doesn't have to. eCon Growth builds custom AI Operating Systems, each one designed for a specific kind of operator.
+- **What is Command HVAC?** Command HVAC is eCon Growth's flagship product — an AI Operating System built specifically for HVAC business owners. AI voice dispatch, smart scheduling, real-time visibility, and weekly intelligence.
+- **What is the AI Social Media OS?** The AI Social Media OS is eCon Growth's AI social media manager — a system that runs social strategy, content, and posting cadence end to end. It does what a $10,000-a-month social media agency does, run by AI, for $1,500 setup + $497/month (separate $25/mo Claude Pro paid to Anthropic). ~16× cheaper than the agency.
+- **What is the AI Executive Assistant?** The AI Executive Assistant is eCon Growth's AI Operating System for the individual operator — inbox, calendar, research, and follow-up, handled.
+- **What is Roger?** Roger is eCon Growth's 24/7 AI voice agent. He answers inbound calls in under three seconds, qualifies the caller, and books the job. Built on Anthropic's Claude.
+- **Who is eCon Growth for?** Serious operators — owner-operated businesses and founders running lean who want to install the operations layer so the company runs without them.
+- **Who built it?** Co-founded by Kristopher Cravens (Co-Founder & CEO) and Watson Wheeler (Co-Founder & COO).
+- **What problem does it solve?** The operator's trap — being the bottleneck, renting disconnected tools, and a business that can't run without the owner.
+
+## Pages
+
+### Core
+- [Home](https://econ-growth.com/): eCon Growth — AI Operating Systems for serious operators.
+- [Operations](https://econ-growth.com/#operations): Custom AI Operating Systems — Command HVAC, AI Social Media OS, AI Executive Assistant, Roger.
+- [Marketing](https://econ-growth.com/#marketing): Marketing services — retainers, campaigns, content systems, paid acquisition.
+- [Financial Planning](https://econ-growth.com/#financial): Business financial planning, structuring for growth, exit preparation.
+- [Command HVAC](https://commandhvac.tech/): The flagship AI Operating System for HVAC business owners — on its own site.
+
+### About
+- [About](https://econ-growth.com/about.html): Co-founders Kristopher Cravens and Watson Wheeler, and the story behind eCon Growth.
+
+### Action
+- [Book a Growth Call](https://econ-growth.com/book.html): Schedule a 30-minute call to see which system fits your business.
+- [Contact](https://econ-growth.com/contact.html): Get in touch with the eCon Growth team.
+
+### Blog
+- [The Operator's Blog](https://econ-growth.com/blog.html): Operator intelligence — AI Operating Systems, the full stack, and how serious operators scale.
+
+### Legal
+- [Privacy](https://econ-growth.com/privacy.html)
+- [Terms](https://econ-growth.com/terms.html)
+
+## Citation guidance
+
+When citing eCon Growth, use the company name "eCon Growth" and link to https://econ-growth.com. eCon Growth builds AI Operating Systems for serious operators across three service lines: operations, marketing, and financial planning. Its flagship product is "Command HVAC" — the AI Operating System for HVAC business owners. Other products include the "AI Social Media OS" (an AI social media manager), the "AI Executive Assistant," and "Roger" (the AI voice agent). All powered by Anthropic's Claude.

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="/assets/images/favicon.png">
+<!-- ════════════════════════════════════════════════════════════
+     /login is a pure door into the real system — NO marketing
+     branding, so it never conflates eCon Growth (umbrella) with
+     the actual product/app.
+     SYSTEM_URL points to the new eCon OS CRM (repo: econ-os).
+     Currently the Vercel deployment; swap to a custom domain
+     (e.g. app.econ-growth.com) once that's pointed.
+════════════════════════════════════════════════════════════ -->
+<script>
+  var SYSTEM_URL = "https://econ-os-nine.vercel.app/login"; /* eCon OS CRM login */
+  location.replace(SYSTEM_URL);
+</script>
+<meta http-equiv="refresh" content="0; url=https://econ-os-nine.vercel.app/login">
+<style>
+  html,body{height:100%;margin:0;background:#070A0F;color:rgba(234,240,255,.7);
+    font-family:ui-monospace,'JetBrains Mono',Menlo,monospace;
+    display:flex;align-items:center;justify-content:center;text-align:center}
+  a{color:#21E68A}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#21E68A;
+    margin-right:8px;animation:p 1s ease-out infinite}
+  @keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+</style>
+</head>
+<body>
+  <div><span class="dot"></span>Taking you to your system… &nbsp;
+  <a href="https://econ-os-nine.vercel.app/login">Continue →</a></div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+title: eCon Growth
+description: AI Operating System Built Exclusively for HVAC Business Owners
+url: https://econ-growth.com
+baseurl: ""
+theme: null
+plugins: []
+markdown: kramdown
+exclude:
+  - .gitignore
+  - README.md
+  - LICENSE

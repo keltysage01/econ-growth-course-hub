@@ -1,0 +1,298 @@
+/* ═══════════════════════════════════════════════════════
+   CINEMA-PRO — HUD overlay · custom cursor · boot log
+   Section scanlines · glitch hover · supercharged cold open
+   Layers on top of cinema.css ═══════════════════════════ */
+
+/* ═══ HUD FRAME — corner brackets + bezel readouts ═══ */
+.cine-hud{
+  position:fixed;inset:0;z-index:9400;pointer-events:none;
+  opacity:0;transition:opacity .8s ease-out .6s;
+  font-family:'JetBrains Mono',monospace;
+  color:rgba(33,230,138,.75);
+  font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+}
+body.cine-hud-on .cine-hud{opacity:1}
+
+.cine-hud-bracket{
+  position:absolute;width:36px;height:36px;
+  border:1px solid rgba(33,230,138,.55);
+}
+.cine-hud-bracket.tl{top:22px;left:22px;border-right:none;border-bottom:none}
+.cine-hud-bracket.tr{top:22px;right:22px;border-left:none;border-bottom:none}
+.cine-hud-bracket.bl{bottom:22px;left:22px;border-right:none;border-top:none}
+.cine-hud-bracket.br{bottom:22px;right:22px;border-left:none;border-top:none}
+.cine-hud-bracket::before{
+  content:"";position:absolute;width:6px;height:6px;
+  background:#21E68A;border-radius:50%;
+  box-shadow:0 0 10px rgba(33,230,138,.7);
+  animation:cineBracketPulse 2.2s ease-in-out infinite;
+}
+.cine-hud-bracket.tl::before{top:-3px;left:-3px}
+.cine-hud-bracket.tr::before{top:-3px;right:-3px}
+.cine-hud-bracket.bl::before{bottom:-3px;left:-3px}
+.cine-hud-bracket.br::before{bottom:-3px;right:-3px}
+@keyframes cineBracketPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.4}}
+
+.cine-hud-readout{
+  position:absolute;display:flex;align-items:center;gap:8px;
+  background:rgba(7,10,15,.55);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  padding:5px 11px;border:1px solid rgba(33,230,138,.18);
+  border-radius:3px;
+}
+.cine-hud-readout .dot{width:5px;height:5px;border-radius:50%;background:#21E68A;box-shadow:0 0 8px rgba(33,230,138,.7);animation:cineHudDot 1.4s infinite}
+@keyframes cineHudDot{0%,100%{opacity:1}50%{opacity:.3}}
+.cine-hud-readout.tl{top:18px;left:78px}
+.cine-hud-readout.tr{top:18px;right:78px;color:rgba(33,230,138,.85)}
+.cine-hud-readout.bl{bottom:18px;left:78px;color:rgba(234,240,255,.5)}
+.cine-hud-readout.br{bottom:18px;right:78px}
+.cine-hud-readout .sep{opacity:.4;margin:0 4px}
+@media(max-width:760px){
+  .cine-hud-bracket{width:22px;height:22px}
+  .cine-hud-bracket.tl,.cine-hud-bracket.tr{top:48px}
+  .cine-hud-bracket.bl,.cine-hud-bracket.br{bottom:48px}
+  .cine-hud-readout{display:none}
+}
+
+/* Persistent ambient scan-line over whole viewport */
+.cine-vhs-scan{
+  position:fixed;inset:0;z-index:3;pointer-events:none;
+  background:repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 3px,
+    rgba(33,230,138,.012) 3px,
+    rgba(33,230,138,.012) 4px
+  );
+  mix-blend-mode:overlay;opacity:0;transition:opacity 1s;
+}
+body.cine-hud-on .cine-vhs-scan{opacity:1}
+
+/* Slow vertical scanner sweeping page */
+.cine-vhs-sweep{
+  position:fixed;left:0;right:0;height:120px;z-index:4;pointer-events:none;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    rgba(33,230,138,.03) 40%,
+    rgba(33,230,138,.07) 50%,
+    rgba(33,230,138,.03) 60%,
+    transparent 100%);
+  animation:cineVhsSweep 14s linear infinite;
+  opacity:0;transition:opacity 1s;mix-blend-mode:screen;
+}
+body.cine-hud-on .cine-vhs-sweep{opacity:1}
+@keyframes cineVhsSweep{0%{transform:translateY(-100vh)}100%{transform:translateY(120vh)}}
+
+/* ═══ CUSTOM CURSOR — green reticle ═══ */
+@media(hover:hover) and (pointer:fine){
+  body.cine-hud-on,
+  body.cine-hud-on *{cursor:none!important}
+  body.cine-hud-on a,
+  body.cine-hud-on button,
+  body.cine-hud-on input,
+  body.cine-hud-on textarea,
+  body.cine-hud-on select,
+  body.cine-hud-on [contenteditable]{cursor:none!important}
+}
+.cine-reticle{
+  position:fixed;left:0;top:0;width:48px;height:48px;
+  pointer-events:none;z-index:99500;
+  transform:translate(-50%,-50%);
+  mix-blend-mode:screen;
+  opacity:0;transition:opacity .25s,width .2s,height .2s;
+}
+body.cine-hud-on .cine-reticle{opacity:1}
+.cine-reticle::before,
+.cine-reticle::after{
+  content:"";position:absolute;
+  border:1px solid rgba(33,230,138,.85);
+  box-shadow:0 0 14px rgba(33,230,138,.45);
+}
+.cine-reticle::before{
+  inset:0;border-radius:50%;
+  border-style:dashed;
+  animation:cineReticleSpin 12s linear infinite;
+}
+.cine-reticle::after{
+  left:50%;top:50%;width:8px;height:8px;
+  background:rgba(33,230,138,.85);
+  border:none;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  box-shadow:0 0 14px rgba(33,230,138,.9);
+}
+.cine-reticle.hover{width:72px;height:72px}
+.cine-reticle.hover::before{border-color:rgba(33,230,138,1);border-style:solid}
+.cine-reticle.click{width:96px;height:96px;transition:width .1s,height .1s,opacity .25s}
+@keyframes cineReticleSpin{to{transform:rotate(360deg)}}
+.cine-reticle-cross{
+  position:absolute;inset:0;pointer-events:none;
+}
+.cine-reticle-cross::before,
+.cine-reticle-cross::after{
+  content:"";position:absolute;
+  background:rgba(33,230,138,.5);
+  box-shadow:0 0 8px rgba(33,230,138,.6);
+}
+.cine-reticle-cross::before{left:50%;top:-8px;width:1px;height:14px;transform:translateX(-50%)}
+.cine-reticle-cross::after{top:50%;left:-8px;height:1px;width:14px;transform:translateY(-50%)}
+
+@media(hover:none){.cine-reticle,.cine-reticle-cross{display:none}}
+
+/* ═══ BOOT LOG STREAM — lower-right ═══ */
+.cine-bootlog{
+  position:fixed;right:18px;bottom:78px;z-index:200;
+  width:240px;max-height:140px;overflow:hidden;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9.5px;line-height:1.55;
+  color:rgba(33,230,138,.55);letter-spacing:.04em;
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 80%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 30%,#000 80%,transparent);
+  opacity:0;transition:opacity 1s ease-out;
+}
+body.cine-hud-on .cine-bootlog{opacity:1}
+.cine-bootlog div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:cineLogIn .4s ease-out both}
+.cine-bootlog div .ok{color:#21E68A}
+.cine-bootlog div .ts{color:rgba(234,240,255,.32);margin-right:6px}
+@keyframes cineLogIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:900px){.cine-bootlog{display:none}}
+
+/* ═══ COLD-OPEN — supercharged HUD boot ═══ */
+#cine-cold-open.cine-pro{
+  background:radial-gradient(ellipse 80% 60% at 50% 50%,#070A0F 0%,#000 100%);
+}
+.cine-co-boot{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:rgba(33,230,138,.7);letter-spacing:.08em;
+}
+.cine-co-boot-l{position:absolute;top:32px;left:32px;width:260px;text-align:left}
+.cine-co-boot-r{position:absolute;top:32px;right:32px;width:260px;text-align:right;color:rgba(234,240,255,.45)}
+.cine-co-boot-l div,.cine-co-boot-r div{opacity:0;animation:cineCoBootLine .5s ease-out forwards}
+.cine-co-boot-l div:nth-child(1){animation-delay:.15s}
+.cine-co-boot-l div:nth-child(2){animation-delay:.30s}
+.cine-co-boot-l div:nth-child(3){animation-delay:.45s}
+.cine-co-boot-l div:nth-child(4){animation-delay:.60s}
+.cine-co-boot-l div:nth-child(5){animation-delay:.75s}
+.cine-co-boot-l div:nth-child(6){animation-delay:.90s}
+.cine-co-boot-r div:nth-child(1){animation-delay:.22s}
+.cine-co-boot-r div:nth-child(2){animation-delay:.36s}
+.cine-co-boot-r div:nth-child(3){animation-delay:.52s}
+.cine-co-boot-r div:nth-child(4){animation-delay:.68s}
+@keyframes cineCoBootLine{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+#cine-cold-open.cine-pro .cine-co-mark{
+  animation:cineProMarkIn 2.2s 1.4s cubic-bezier(.2,.8,.2,1) both;
+  filter:drop-shadow(0 0 30px rgba(33,230,138,.4));
+}
+@keyframes cineProMarkIn{
+  0%{opacity:0;transform:scale(.6);letter-spacing:.5em;filter:blur(24px) drop-shadow(0 0 0 rgba(33,230,138,0))}
+  50%{opacity:1;filter:blur(0) drop-shadow(0 0 50px rgba(33,230,138,.7))}
+  100%{opacity:1;transform:scale(1);letter-spacing:.5px;filter:blur(0) drop-shadow(0 0 30px rgba(33,230,138,.4))}
+}
+
+#cine-cold-open.cine-pro .cine-co-tag{animation:cineTagIn .8s 3.4s ease-out forwards}
+#cine-cold-open.cine-pro .cine-co-skip{animation:cineTagIn .6s 3.7s ease-out forwards}
+
+/* Reticle ring around logo */
+.cine-co-ring{
+  position:absolute;left:50%;top:50%;
+  width:520px;height:520px;
+  transform:translate(-50%,-50%) scale(0);
+  border:1px solid rgba(33,230,138,.35);border-radius:50%;
+  pointer-events:none;z-index:1;
+  animation:cineCoRing 2.6s 1.1s ease-out forwards;
+}
+.cine-co-ring.inner{width:340px;height:340px;border-color:rgba(33,230,138,.5);animation-delay:1.3s}
+@keyframes cineCoRing{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  40%{opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1) rotate(180deg);opacity:.18}
+}
+
+/* Crosshair "TARGET" lines crossing the screen */
+.cine-co-cross{position:absolute;background:rgba(33,230,138,.18);pointer-events:none;z-index:1}
+.cine-co-cross.h{left:0;right:0;top:50%;height:1px;transform:scaleX(0);transform-origin:left;animation:cineCoCrossH 1.2s .9s cubic-bezier(.7,0,.3,1) forwards}
+.cine-co-cross.v{top:0;bottom:0;left:50%;width:1px;transform:scaleY(0);transform-origin:top;animation:cineCoCrossV 1.2s 1.1s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes cineCoCrossH{to{transform:scaleX(1)}}
+@keyframes cineCoCrossV{to{transform:scaleY(1)}}
+
+/* ═══ ATMOSPHERE — opacity bump ═══ */
+#cine-atmosphere.live{opacity:1!important}
+
+/* ═══ SPOTLIGHT — louder ═══ */
+.cine-spotlight{
+  background:radial-gradient(
+    600px circle at var(--sx,50%) var(--sy,50%),
+    rgba(33,230,138,.11),
+    rgba(33,230,138,.045) 25%,
+    rgba(33,230,138,.018) 50%,
+    transparent 70%)!important;
+}
+/* Trailing ring on spotlight */
+.cine-spot-ring{
+  position:fixed;left:0;top:0;width:140px;height:140px;
+  border:1px solid rgba(33,230,138,.16);border-radius:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;z-index:2;
+  opacity:0;transition:opacity .6s;
+}
+body.cine-spot-on .cine-spot-ring{opacity:.7}
+@media(hover:none){.cine-spot-ring{display:none}}
+
+/* ═══ LETTERBOX — taller + branded readouts ═══ */
+.cine-letterbox.top,.cine-letterbox.bot{height:20px}
+body.cine-keymoment .cine-letterbox.top,
+body.cine-keymoment .cine-letterbox.bot{height:68px}
+
+/* ═══ SECTION SCAN-LINE ENTRANCE ═══ */
+.cine-section-scan{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(33,230,138,.7),transparent);
+  box-shadow:0 0 18px rgba(33,230,138,.5);
+  pointer-events:none;z-index:5;
+  opacity:0;
+}
+.cine-scanning .cine-section-scan{
+  opacity:1;animation:cineSecScan 1.4s cubic-bezier(.7,0,.3,1);
+}
+@keyframes cineSecScan{
+  0%{top:0;opacity:0}
+  20%{opacity:1}
+  80%{opacity:1}
+  100%{top:100%;opacity:0}
+}
+
+/* ═══ GLITCH HOVER — RGB chromatic split on buttons ═══ */
+.cine-glitch{position:relative;display:inline-block;transition:text-shadow .12s}
+.cine-glitch:hover{
+  text-shadow:
+    -1.6px 0 0 rgba(255,40,40,.85),
+    1.6px 0 0 rgba(40,200,255,.85);
+  animation:cineGlitchJitter .35s steps(8,end) infinite;
+}
+@keyframes cineGlitchJitter{
+  0%,100%{transform:translate(0,0)}
+  25%{transform:translate(-1px,0)}
+  50%{transform:translate(1px,1px)}
+  75%{transform:translate(-1px,1px)}
+}
+
+/* ═══ NAV-CONDENSE PRO — when scrolled, add tiny telemetry ticker */
+.cine-nav-telemetry{
+  display:none;font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:rgba(33,230,138,.6);letter-spacing:.14em;
+  margin-right:18px;
+  text-transform:uppercase;
+}
+.nav.scrolled .cine-nav-telemetry{display:inline-flex;align-items:center;gap:8px}
+.cine-nav-telemetry .pulse{width:5px;height:5px;border-radius:50%;background:#21E68A;box-shadow:0 0 8px rgba(33,230,138,.7);animation:cineHudDot 1.4s infinite}
+@media(max-width:900px){.cine-nav-telemetry{display:none!important}}
+
+/* Respect reduced motion — turn off the loud bits */
+@media(prefers-reduced-motion:reduce){
+  .cine-vhs-sweep,.cine-vhs-scan,.cine-bootlog,.cine-reticle,.cine-spot-ring{display:none!important}
+  .cine-hud-bracket::before{animation:none}
+  .cine-glitch:hover{text-shadow:none;animation:none}
+}
